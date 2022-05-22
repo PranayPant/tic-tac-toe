@@ -11,11 +11,13 @@ import {BoardCell} from '../../types/BoardCell'
 interface CellProps extends BoardCell {
     rightEdge?: boolean
     bottomEdge?: boolean
-    onMouseOver?: (e: any) => void
+    onMouseEnter?: (e: any) => void
     onMouseOut?: (e: any) => void
+    row: number
+    col: number
 }
 
-const Cell: React.FC<CellProps> = ({rightEdge, bottomEdge, onPath, onMouseOver, onMouseOut}) => {
+const Cell: React.FC<CellProps> = ({row, col, rightEdge, bottomEdge, onPath, onMouseEnter}) => {
 
     const StyledCol = styled(Col)`
         height: 100%;
@@ -26,9 +28,10 @@ const Cell: React.FC<CellProps> = ({rightEdge, bottomEdge, onPath, onMouseOver, 
     `
 
     return (
-        <StyledCol 
-            onMouseEnter={onMouseOver}
-            onMouseOut={onMouseOut}
+        <StyledCol
+            row={row}
+            col={col}
+            onMouseEnter={onMouseEnter}
             align="center" />
     )
 }
