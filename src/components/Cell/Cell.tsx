@@ -4,15 +4,18 @@ import React from 'react'
 import Col from 'react-bootstrap/Col'
 import styled from 'styled-components'
 
+import {BoardCell} from '../../types/BoardCell'
 
-interface CellProps {
+
+
+interface CellProps extends BoardCell {
     rightEdge?: boolean
     bottomEdge?: boolean
-    // is cell along the row or column path of the hovered cell
-    onPath?: boolean
+    onMouseOver?: (e: any) => void
+    onMouseOut?: (e: any) => void
 }
 
-const Cell: React.FC<CellProps> = ({rightEdge, bottomEdge, onPath}) => {
+const Cell: React.FC<CellProps> = ({rightEdge, bottomEdge, onPath, onMouseOver, onMouseOut}) => {
 
     const StyledCol = styled(Col)`
         height: 100%;
@@ -23,7 +26,9 @@ const Cell: React.FC<CellProps> = ({rightEdge, bottomEdge, onPath}) => {
     `
 
     return (
-        <StyledCol onHover={(e) => console.log(e.target + 'Cell')} 
+        <StyledCol 
+            onMouseEnter={onMouseOver}
+            onMouseOut={onMouseOut}
             align="center" />
     )
 }
