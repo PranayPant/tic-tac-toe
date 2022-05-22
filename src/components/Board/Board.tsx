@@ -1,6 +1,6 @@
 // eslint-disable
 import React, {useState, MouseEvent} from 'react'
-import {Container, Row} from 'react-bootstrap'
+import {Row} from 'react-bootstrap'
 
 import Cell from '../../components/Cell'
 
@@ -35,7 +35,7 @@ const Board: React.FC<BoardProps> = ({className}) => {
     }
 
     return (
-        <Container 
+        <div 
             className={className}
             onMouseLeave={(e: MouseEvent<HTMLElement>) => handleHover(e, false)}
         >
@@ -58,7 +58,7 @@ const Board: React.FC<BoardProps> = ({className}) => {
                     ))}
                 </Row>
             ))}
-        </Container>
+        </div>
     )
 }
 
