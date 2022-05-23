@@ -1,7 +1,14 @@
 {
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint"],
+    "extends": [
+        "airbnb",
+        "prettier"
+    ],
+    "plugins": ["@typescript-eslint", "prettier"],
     "rules": {
+        "prettier/prettier": [
+            "error"
+        ],
         "semi": ["error", "never"],
         "quotes": [2, "single"],
         "indent": ["error", 4],

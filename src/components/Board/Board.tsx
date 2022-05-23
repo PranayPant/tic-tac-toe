@@ -32,6 +32,7 @@ const Board: React.FC<BoardProps> = ({className}) => {
             entered
         })
         setMatrix(newMatrix)
+        console.log('Hovered')
     }
 
     return (

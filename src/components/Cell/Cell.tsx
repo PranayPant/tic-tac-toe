@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React from 'react'
+import React, {useState} from 'react'
 import Col from 'react-bootstrap/Col'
 import styled from 'styled-components'
 
@@ -19,20 +19,34 @@ interface CellProps extends BoardCell {
 
 const Cell: React.FC<CellProps> = ({row, col, rightEdge, bottomEdge, onPath, onMouseEnter}) => {
 
+    const [value, setValue] = useState<'X' | 'O' | ''>('')
+
     const StyledCol = styled(Col)`
         height: 100%;
         width: 33%;
         background-color: ${onPath ? 'lightgreen' : 'lightgray'};
         border-right: ${rightEdge ? 'none' : '5px solid black'};
         border-bottom: ${bottomEdge ? 'none' : '5px solid black'};
+
+        input{
+            width: 100%;
+            height: 100%;
+            background-color: ${onPath ? 'lightgreen' : 'lightgray'};
+            border: none;
+        }
     `
 
     return (
         <StyledCol
             row={row}
             col={col}
+            align="center"
             onMouseEnter={onMouseEnter}
-            align="center" />
+        >
+            <input
+                id='move' value={value} placeholder='' 
+            />
+        </StyledCol>
     )
 }
 
