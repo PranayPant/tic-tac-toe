@@ -1,10 +1,71 @@
 {
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint"],
+    "parserOptions": {
+        "project": "./tsconfig.json",
+        "tsconfigRootDir": "./"
+    },
+    "extends": [
+        "airbnb",
+        "prettier",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    ],
+    "plugins": ["@typescript-eslint", "prettier", "import", "react-hooks"],
     "rules": {
-        "semi": ["error", "never"],
-        "quotes": [2, "single"],
-        "indent": ["error", 4],
-        "max-len": ["error", { "code": 80 }]
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto"
+            }
+        ],
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
+        "react/require-default-props": "off",
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [".tsx", ".ts", ".js"]
+            }
+        ],
+        "@typescript-eslint/no-unused-vars": ["warn"],
+        "@typescript-eslint/no-unsafe-call": ["warn"],
+        "import/no-unresolved": "error",
+        "react/jsx-no-useless-fragment": 0,
+        "import/newline-after-import": 0,
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "ts": "never",
+                "tsx": "never",
+                "js": "never"
+            }
+        ],
+        "react/function-component-definition": [
+            0,
+            {
+                "namedComponents": "function-declaration"
+            }
+        ]
+    },
+    "overrides": [
+        {
+            "files": ["src/**/*.ts", "src/**/*.tsx"]
+        }
+    ],
+    "settings": {
+        "import/parsers": {
+            "@typescript-eslint/parser": [".ts", ".tsx"]
+        },
+        "import/resolver": {
+            "typescript": {
+                "alwaysTryTypes": true,
+                "project": "./tsconfig.json"
+            }
+        }
     }
-  }
+}

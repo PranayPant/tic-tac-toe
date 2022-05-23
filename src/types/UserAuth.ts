@@ -1,8 +1,8 @@
 export interface UserRequest {
-    email: string
+    email: string;
 }
 
 export interface UserResponse {
-    success: boolean
-    token: string
+    success: boolean;
+    token: string;
 }
