@@ -1,5 +1,5 @@
 import { BoardCell, BoardMatrix, BoardRow } from "types/BoardCell";
-import { BoardMoves, Move } from "types/Move";
+import { BoardMoves, Move, SolveSpace } from "types/Move";
 import { MAX_ROWS } from "constants/app";
 
 type MatrixHoverChangeProps = {
@@ -35,11 +35,14 @@ export const createInitialMoves = (): BoardMoves => {
     return moves;
 };
 
-export const getBoardMoves = (matrix: BoardMatrix): BoardMoves => {
-    const moves: BoardMoves = matrix.map((row: BoardRow) =>
-        row.map((cell: BoardCell) => cell.value)
-    );
-    return moves;
+export const createInitialSolveSpace = (): SolveSpace => {
+    const range = [...Array(MAX_ROWS).keys()];
+    const solveSpace: SolveSpace = {
+        rows: range,
+        cols: range,
+        diags: [0, MAX_ROWS - 1]
+    };
+    return solveSpace;
 };
 
 export const calculateHoverMatrix = ({

@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useState, MouseEvent } from "react";
+import React, { useState, useEffect, MouseEvent } from "react";
 import { Row } from "react-bootstrap";
 
 import Cell from "components/Cell";
@@ -10,16 +10,19 @@ import { BoardCell, BoardMatrix, BoardRow } from "types/BoardCell";
 import {
     createInitialMatrix,
     createInitialMoves,
+    createInitialSolveSpace,
     calculateHoverMatrix
 } from "utils";
 import { MAX_ROWS } from "constants/app";
 import { fetchNextMove } from "api";
-import { BoardMoves, MoveResponse } from "types/Move";
+import { BoardMoves, MoveResponse, SolveSpace } from "types/Move";
 
 interface MoveState {
     loading: boolean;
     error: boolean;
     moves: BoardMoves;
+    xSolveSpace: SolveSpace;
+    oSolveSpace: SolveSpace;
 }
 
 const Board: React.FC = () => {
@@ -27,10 +30,12 @@ const Board: React.FC = () => {
     const [moveState, setMoveState] = useState<MoveState>({
         loading: false,
         error: false,
-        moves: createInitialMoves()
+        moves: createInitialMoves(),
+        xSolveSpace: createInitialSolveSpace(),
+        oSolveSpace: createInitialSolveSpace()
     });
 
-    const updateMoves = (newMoves: BoardMoves) => {
+    const getOMove = (newMoves: BoardMoves) => {
         let finalMoves: BoardMoves = [];
         let error = false;
         setMoveState((prev) => ({ ...prev, loading: true }));
@@ -58,6 +63,21 @@ const Board: React.FC = () => {
             });
     };
 
+    const updateMoves = (newMoves: BoardMoves, newOSolveSpace: SolveSpace) => {
+        let hasXWon = false;
+
+        if (
+            newOSolveSpace.rows.length === 0 &&
+            newOSolveSpace.cols.length === 0 &&
+            newOSolveSpace.diags.length === 0
+        ) {
+            hasXWon = true;
+        }
+        if (!hasXWon) {
+            getOMove(newMoves);
+        }
+    };
+
     const handleHover = (e: MouseEvent<HTMLElement>, entered: boolean) => {
         e.preventDefault();
         let newMatrix: BoardMatrix = [];
@@ -81,9 +101,22 @@ const Board: React.FC = () => {
         const cell: HTMLElement = e.target as HTMLElement;
         const row = parseInt(cell.getAttribute("row") as string, 10);
         const col = parseInt(cell.getAttribute("col") as string, 10);
+
         const newMoves: BoardMoves = [...moveState.moves];
+        const newOSolveSpace = { ...moveState.oSolveSpace };
+
         newMoves[row][col] = "X";
-        updateMoves(newMoves);
+
+        moveState.oSolveSpace.rows.splice(row, 1);
+        moveState.oSolveSpace.rows.splice(col, 1);
+        if (row === col) {
+            moveState.oSolveSpace.diags.splice(0, 1);
+        }
+        if (row + col === MAX_ROWS - 1) {
+            moveState.oSolveSpace.diags.splice(1, 1);
+        }
+
+        updateMoves(newMoves, newOSolveSpace);
     };
 
     return (
