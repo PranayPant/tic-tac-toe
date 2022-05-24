@@ -1,18 +1,20 @@
 /* eslint-disable */
 
-import React, { useState } from "react";
-import Col from "react-bootstrap/Col";
+import React from "react";
+import { Col } from "react-bootstrap";
 import styled from "styled-components";
 
 import { BoardCell } from "types/BoardCell";
+import { Move } from "types/Move";
 
 interface CellProps extends BoardCell {
     rightEdge?: boolean;
     bottomEdge?: boolean;
-    onMouseEnter?: (e: any) => void;
-    onMouseOut?: (e: any) => void;
+    onMouseEnter: (e: any) => void;
+    onClick: (e: any) => void;
     row: number;
     col: number;
+    value: Move;
 }
 
 const Cell: React.FC<CellProps> = ({
@@ -21,10 +23,10 @@ const Cell: React.FC<CellProps> = ({
     rightEdge,
     bottomEdge,
     onPath,
-    onMouseEnter
+    value,
+    onMouseEnter,
+    onClick
 }) => {
-    const [value, setValue] = useState<"X" | "O" | "">("");
-
     const StyledCol = styled(Col)`
         height: 100%;
         width: 33%;
@@ -33,13 +35,25 @@ const Cell: React.FC<CellProps> = ({
         border-bottom: ${bottomEdge ? "none" : "5px solid black"};
     `;
 
+    const handleClick = (e: any) => {
+        if (value) {
+            return;
+        }
+        onClick(e);
+    };
+
     return (
         <StyledCol
+            disabled={!value}
+            value={value}
             row={row}
             col={col}
             align="center"
             onMouseEnter={onMouseEnter}
-        />
+            onClick={handleClick}
+        >
+            {value}
+        </StyledCol>
     );
 };
 

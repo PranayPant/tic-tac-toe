@@ -1,7 +1,15 @@
-import { BoardCell, BoardMatrix } from "../types/BoardCell";
-import { MAX_ROWS } from "../constants";
+import { BoardCell, BoardMatrix, BoardRow } from "types/BoardCell";
+import { BoardMoves, Move } from "types/Move";
+import { MAX_ROWS } from "constants/app";
 
-export const createInitialState = (): BoardMatrix => {
+type MatrixHoverChangeProps = {
+    matrix: BoardMatrix;
+    targetRow?: number;
+    targetCol?: number;
+    entered: boolean;
+};
+
+export const createInitialMatrix = (): BoardMatrix => {
     const matrix: BoardMatrix = [];
     const cell: BoardCell = { onPath: false, value: "" };
 
@@ -14,11 +22,24 @@ export const createInitialState = (): BoardMatrix => {
     return matrix;
 };
 
-type MatrixHoverChangeProps = {
-    matrix: BoardMatrix;
-    targetRow?: number;
-    targetCol?: number;
-    entered: boolean;
+export const createInitialMoves = (): BoardMoves => {
+    const moves: BoardMoves = [];
+    const move: Move = "";
+
+    for (let r = 0; r < MAX_ROWS; r += 1) {
+        moves.push([]);
+        for (let c = 0; c < MAX_ROWS; c += 1) {
+            moves[r].push(move);
+        }
+    }
+    return moves;
+};
+
+export const getBoardMoves = (matrix: BoardMatrix): BoardMoves => {
+    const moves: BoardMoves = matrix.map((row: BoardRow) =>
+        row.map((cell: BoardCell) => cell.value)
+    );
+    return moves;
 };
 
 export const calculateHoverMatrix = ({

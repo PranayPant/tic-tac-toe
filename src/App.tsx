@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import LoadingOverlay from "react-loading-overlay";
 
 import Board from "components/Board";
 import Banner from "components/Banner";
+import Loader from "components/Loader/Loader";
 
-import authenticateUser from "./api";
+import { authenticateUser } from "./api";
 
 interface AppState {
     email: string;
@@ -36,6 +36,12 @@ function TicTacToe() {
                         token: res.token,
                         loading: false
                     }));
+                } else {
+                    setState((prev) => ({
+                        ...prev,
+                        loading: false,
+                        error: true
+                    }));
                 }
             })
             .catch(() => {
@@ -44,15 +50,18 @@ function TicTacToe() {
     };
     return (
         <div id="app" className="centered">
-            <LoadingOverlay active={state.loading} spinner text="Loading..." />
+            <Loader active={state.loading} />
             {state.error && (
                 <Banner
                     variant="danger"
                     text="Oops! We couldn't log you in. Please try again."
+                    onClose={() =>
+                        setState((prev) => ({ ...prev, error: false }))
+                    }
                 />
             )}
             <h1>Tic-Tac-Toe</h1>
-            {state.token && <Board className="board" />}
+            {state.token && <Board />}
             {!state.token && (
                 <div id="sign-up">
                     <h2>Sign Up to Play</h2>

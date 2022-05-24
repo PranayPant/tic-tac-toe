@@ -1,26 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { Alert } from "react-bootstrap";
 
 interface BannerProps {
     variant: string;
     text: string;
+    onClose: () => void;
 }
 
-const Banner: React.FC<BannerProps> = ({ variant, text }) => {
-    const [show, setShow] = useState(true);
-    return (
-        <>
-            {show && (
-                <Alert
-                    variant={variant}
-                    onClose={() => setShow(false)}
-                    dismissible
-                >
-                    <p>{text}</p>
-                </Alert>
-            )}
-        </>
-    );
-};
+const Banner: React.FC<BannerProps> = ({ variant, text, onClose }) => (
+    <Alert variant={variant} onClose={onClose} dismissible>
+        <p>{text}</p>
+    </Alert>
+);
 
 export default Banner;
